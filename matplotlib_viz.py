@@ -216,7 +216,7 @@ class InteractiveVisualization:
         print("\n🎯 AUTO-AIM ENABLED (robot calculates perfect tilt!)")
         print("\nControls:")
         print("  UP/DOWN arrows - Manual tilt (disables auto-aim)")
-        print("  A              - Toggle auto-aim")
+        print("  A              - Toggle auto-aim & auto-pour")
         print("  ENTER/SPACE    - Toggle pouring")
         print("  R              - Reset")
         print("  ESC            - Quit")
@@ -242,6 +242,11 @@ class InteractiveVisualization:
             self.sim.auto_aim = not self.sim.auto_aim
             status = "ON 🎯" if self.sim.auto_aim else "OFF"
             print(f"Auto-aim: {status}")
+            
+            # When enabling auto-aim, automatically start pouring
+            if self.sim.auto_aim:
+                self.sim.is_pouring = True
+                print("Auto-pouring started! 🍷")
         
         elif event.key in [' ', 'enter']:
             self.sim.is_pouring = not self.sim.is_pouring
@@ -397,7 +402,7 @@ Pouring:        {'YES' if self.sim.is_pouring else 'NO'}
 CONTROLS
 {'='*30}
 
-A           - Toggle auto-aim
+A           - Auto-aim & pour
 ↑/↓         - Manual tilt
 SPACE/ENTER - Pour on/off
 R           - Reset
@@ -408,6 +413,9 @@ AUTO-AIM 🎯
 
 Robot calculates perfect
 tilt angle to hit cup!
+
+Press A to enable auto-aim
+and start pouring!
 
 Uses projectile motion:
 tan(θ) = (v² ± √Δ) / gx
